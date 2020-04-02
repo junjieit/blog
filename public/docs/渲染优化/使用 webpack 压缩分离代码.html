@@ -1,0 +1,136 @@
+<h1 id="使用-webpack-压缩分离代码">使用 webpack 压缩分离代码</h1>
+<h2 id="概述">概述</h2>
+<p>随着项目越来越庞大，打包后的包体积也变的臃肿。所以需要合理的配置，来优化打包方式。<br/>本文主要从两方面着手：</p>
+<ul>
+<li>合理打包第三方插件</li>
+<li>合理分配项目文件的打包</li>
+</ul>
+<h2 id="分析工具">分析工具</h2>
+<p><a href="https://www.webpackjs.com/guides/code-splitting/#bundle-%E5%88%86%E6%9E%90-bundle-analysis-" target="_blank">官网</a></p>
+<blockquote>
+<p>在优化之前，需要先分析着手点。合理的使用工具，可以让我们更准确的优化</p>
+</blockquote>
+<h3 id="webpack-分析">webpack 分析</h3>
+<p>官方自带了一个初始的分析工具，可以生成 json，再用其他工具分析</p>
+<pre><code>npx webpack --<span class="hljs-built_in">config</span> <span class="hljs-keyword">build/webpack.config.prod.js </span>--profile --<span class="hljs-keyword">json </span>&gt; stats.<span class="hljs-keyword">json </span></code></pre><h3 id="使用-webpack-bundle-analyzer-分析">使用 webpack-bundle-analyzer 分析</h3>
+<p><a href="https://github.com/webpack-contrib/webpack-bundle-analyzer" target="_blank">官网</a></p>
+<h4 id="安装">安装</h4>
+<pre><code class="language-Bash">yarn <span class="hljs-keyword">add </span>webpack-<span class="hljs-keyword">bundle-analyzer </span>-D
+
+npm <span class="hljs-keyword">install </span>webpack-<span class="hljs-keyword">bundle-analyzer </span>-D</code></pre>
+<h4 id="配置">配置</h4>
+<pre><code class="language-JavaScript"><span class="hljs-variable">const</span> { <span class="hljs-variable">BundleAnalyzerPlugin</span> } = <span class="hljs-function"><span class="hljs-title">require</span>(<span class="hljs-string">'webpack-bundle-analyzer'</span>)</span>
+
+<span class="hljs-variable">module.exports</span> = {
+  <span class="hljs-variable">plugins</span>: [
+    <span class="hljs-variable">new</span> <span class="hljs-function"><span class="hljs-title">BundleAnalyzerPlugin</span>()</span>
+  ]
+}</code></pre>
+<h2 id="代码分离，按需加载">代码分离，按需加载</h2>
+<p><a href="https://www.webpackjs.com/guides/code-splitting/" target="_blank">官网</a></p>
+<h3 id="分离方式">分离方式</h3>
+<p>按需加载，应该先理清怎样才符合项目的需求。本文从以下几个方面来考虑需要加载哪些包：</p>
+<ul>
+<li>用户体验<ul>
+<li>用户第一眼看到的页面</li>
+<li>第一次可以交互</li>
+<li>延迟需要的页面、交互不常改变的包，合并打包</li>
+</ul>
+</li>
+<li>浏览器缓存<ul>
+<li>不常改动的包，合并打包</li>
+</ul>
+</li>
+<li>http 并行下载</li>
+</ul>
+<h3 id="使用方式">使用方式</h3>
+<pre><code class="language-Javascript"><span class="hljs-keyword">import</span> (<span class="hljs-comment">/* webpackChunkName: "lodash" */</span> <span class="hljs-string">'lodash'</span>).then(<span class="hljs-function"><span class="hljs-params">_</span> =&gt;</span> {
+  <span class="hljs-comment">// Do something</span>
+})</code></pre>
+<h3 id="问题">问题</h3>
+<ol>
+<li>Typescript 模块设置<pre><code class="language-Bash">TS1323: Dynamic imports are <span class="hljs-keyword">only</span> supported <span class="hljs-keyword">when</span> the <span class="hljs-string">'--module'</span> flag <span class="hljs-keyword">is</span> <span class="hljs-keyword">set</span> <span class="hljs-keyword">to</span> <span class="hljs-string">'es2020'</span>, <span class="hljs-string">'esnext'</span>, <span class="hljs-string">'commonjs'</span>, <span class="hljs-string">'amd'</span>, <span class="hljs-string">'system'</span>, <span class="hljs-keyword">or</span> <span class="hljs-string">'umd'</span>.</code></pre>
+解决方法：配置 <code>tsconfig.json</code><pre><code class="language-JSON">{
+<span class="hljs-attr">"compilerOptions"</span>: {
+ <span class="hljs-attr">"module"</span>: <span class="hljs-string">"esnext"</span>,
+ <span class="hljs-attr">"moduleResolution"</span>: <span class="hljs-string">"node"</span>
+}
+}</code></pre>
+</li>
+</ol>
+<h2 id="代码压缩">代码压缩</h2>
+<p><a href="https://webpack.js.org/configuration/optimization/#root" target="_blank">官网</a></p>
+<p>webpack 4 在生产模式下默认会压缩，但是可以自定义一些配置</p>
+<h4 id="压缩-js">压缩 JS</h4>
+<p><a href="https://www.webpackjs.com/plugins/uglifyjs-webpack-plugin/" target="_blank">官网</a></p>
+<p><strong><em>不能压缩 es6</em></strong></p>
+<pre><code class="language-JavaScript"><span class="hljs-string">const</span> <span class="hljs-string">UglifyJsPlugin</span> <span class="hljs-string">=</span> <span class="hljs-string">require('uglifyjs-webpack-plugin')</span>
+
+<span class="hljs-string">module.exports</span> <span class="hljs-string">=</span> <span class="hljs-string">{</span>
+  <span class="hljs-attr">optimization:</span> <span class="hljs-string">{</span>
+    <span class="hljs-attr">minimizer:</span> <span class="hljs-string">[</span>
+        <span class="hljs-string">//</span> <span class="hljs-string">压缩JS</span>
+        <span class="hljs-string">new</span> <span class="hljs-string">UglifyJsPlugin({</span>
+            <span class="hljs-string">//</span> <span class="hljs-string">有很多可以配置</span>
+            <span class="hljs-attr">cache:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+            <span class="hljs-attr">parallel:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span> <span class="hljs-string">//</span> <span class="hljs-string">并行</span>
+            <span class="hljs-attr">sourceMap:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+            <span class="hljs-attr">uglifyOptions:</span> <span class="hljs-string">{</span>
+                 <span class="hljs-string">//</span> <span class="hljs-string">在UglifyJs删除没有用到的代码时不输出警告</span>
+                <span class="hljs-attr">warnings:</span> <span class="hljs-literal">false</span><span class="hljs-string">,</span>
+                <span class="hljs-attr">output:</span> <span class="hljs-string">{</span>
+                    <span class="hljs-string">//</span> <span class="hljs-string">删除所有的注释</span>
+                    <span class="hljs-attr">comments:</span> <span class="hljs-literal">false</span><span class="hljs-string">,</span>
+                    <span class="hljs-string">//</span> <span class="hljs-string">最紧凑的输出</span>
+                    <span class="hljs-attr">beautify:</span> <span class="hljs-literal">false</span>
+                <span class="hljs-string">},</span>
+                <span class="hljs-attr">compress:</span> <span class="hljs-string">{</span>
+                    <span class="hljs-string">//</span> <span class="hljs-string">删除所有的</span> <span class="hljs-string">`console`</span> <span class="hljs-string">语句</span>
+                    <span class="hljs-string">//</span> <span class="hljs-string">还可以兼容ie浏览器</span>
+                    <span class="hljs-attr">drop_console:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+                    <span class="hljs-string">//</span> <span class="hljs-string">内嵌定义了但是只用到一次的变量</span>
+                    <span class="hljs-attr">collapse_vars:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+                    <span class="hljs-string">//</span> <span class="hljs-string">提取出出现多次但是没有定义成变量去引用的静态值</span>
+                    <span class="hljs-attr">reduce_vars:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+                <span class="hljs-string">}</span>
+            <span class="hljs-string">}</span>
+        <span class="hljs-string">})</span>
+    <span class="hljs-string">]</span>
+  <span class="hljs-string">}</span>
+<span class="hljs-string">}</span></code></pre>
+<h4 id="压缩-js-2（es6-代码）">压缩 JS 2（ES6 代码）</h4>
+<p>配置基本和 <code>uglifyjs-webpack-plugin</code> 一致</p>
+<pre><code class="language-JavaScript"><span class="hljs-string">const</span> <span class="hljs-string">TerserPlugin</span> <span class="hljs-string">=</span> <span class="hljs-string">require('terser-webpack-plugin')</span>
+
+<span class="hljs-string">module.exports</span> <span class="hljs-string">=</span> <span class="hljs-string">{</span>
+  <span class="hljs-attr">optimization:</span> <span class="hljs-string">{</span>
+    <span class="hljs-attr">minimizer:</span> <span class="hljs-string">[</span>
+      <span class="hljs-string">new</span> <span class="hljs-string">TerserPlugin({</span>
+        <span class="hljs-attr">cache:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+        <span class="hljs-attr">parallel:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+        <span class="hljs-attr">sourceMap:</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span> <span class="hljs-string">//</span> <span class="hljs-string">Must</span> <span class="hljs-string">be</span> <span class="hljs-string">set</span> <span class="hljs-string">to</span> <span class="hljs-literal">true</span> <span class="hljs-string">if</span> <span class="hljs-string">using</span> <span class="hljs-string">source-maps</span> <span class="hljs-string">in</span> <span class="hljs-string">production</span>
+        <span class="hljs-attr">terserOptions:</span> <span class="hljs-string">{</span>
+          <span class="hljs-string">//</span> <span class="hljs-string">https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions</span>
+        <span class="hljs-string">}</span>
+      <span class="hljs-string">}),</span>
+    <span class="hljs-string">],</span>
+  <span class="hljs-string">}</span>
+<span class="hljs-string">};</span></code></pre>
+<h4 id="压缩-css">压缩 CSS</h4>
+<p><a href="https://github.com/NMFR/optimize-css-assets-webpack-plugin" target="_blank">官网</a></p>
+<pre><code class="language-JavaScript"><span class="hljs-variable">const</span> <span class="hljs-variable">OptimizeCSSAssertsPlugin</span> = <span class="hljs-function"><span class="hljs-title">require</span>(<span class="hljs-string">'optimize-css-assets-webpack-plugin'</span>)</span>
+
+<span class="hljs-variable">module.exports</span> = {
+  <span class="hljs-variable">optimization</span>: {
+    <span class="hljs-variable">minimizer</span>: [
+      <span class="hljs-variable">new</span> <span class="hljs-function"><span class="hljs-title">OptimizeCSSAssertsPlugin</span>({})</span>
+    ]
+  }
+}</code></pre>
+<h4 id="压缩-styled-components">压缩 styled-components</h4>
+<p><a href="https://styled-components.com/docs/tooling#minification" target="_blank">官网</a><br/><a href="https://github.com/styled-components/babel-plugin-styled-components" target="_blank">官网2-github</a><br/>配置在 babel 文件中</p>
+<pre><code class="language-JSON">{
+  <span class="hljs-attr">"plugins"</span>: [<span class="hljs-string">"babel-plugin-styled-components"</span>]
+}</code></pre>
+<h2 id="拓展阅读">拓展阅读</h2>
+<p><a href="/article/rttude2b1" target="_blank">Webpack 生成预压缩 gzip、brotli 文件</a></p>

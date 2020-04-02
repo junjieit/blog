@@ -1,0 +1,63 @@
+<h1 id="nginx-配置">nginx 配置</h1>
+<h2 id="查看配置文件">查看配置文件</h2>
+<pre><code class="language-Bash"><span class="hljs-attribute">nginx -V</span></code></pre>
+<h2 id="访问配置">访问配置</h2>
+<pre><code class="language-Nginx"><span class="hljs-keyword">location</span> /home {
+  <span class="hljs-keyword">alias</span> home/;
+  <span class="hljs-keyword">index</span> <span class="hljs-keyword">index</span>.html;
+}</code></pre>
+<ul>
+<li><code>root</code>: 实际目录，一般配置 root 目录。路径为 root + location</li>
+<li><code>alias</code>: 虚拟目录，一般配置虚拟目录。 路径为 alias，相当于重定向。后面的 <code>/</code> 不能省略</li>
+</ul>
+<h2 id="单页面配置">单页面配置</h2>
+<p>使用 <code>try_files</code> 匹配 index.html，避免刷新页面 404</p>
+<pre><code class="language-Nginx"><span class="hljs-attribute">location</span> / {
+  <span class="hljs-attribute">root</span> /home/remote/dist;
+  <span class="hljs-attribute">index</span> index.html;
+  <span class="hljs-attribute">try_files</span> <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span>/ /index.html;
+}</code></pre>
+<h2 id="允许跨域">允许跨域</h2>
+<pre><code class="language-Nginx">{
+  http {
+    add_header <span class="hljs-keyword">Access</span>-Control-Allow-origin *;
+    add_header <span class="hljs-keyword">Access</span>-Control-Allow-Headers content-<span class="hljs-keyword">type</span>;
+    add_header <span class="hljs-keyword">Access</span>-Control-Allow-Methods <span class="hljs-keyword">GET</span>,POST,<span class="hljs-keyword">OPTIONS</span>;
+  }
+}</code></pre>
+<h2 id="反向代理">反向代理</h2>
+<pre><code class="language-Nginx"><span class="hljs-attribute">location</span> /api {
+  <span class="hljs-attribute">proxy_pass</span> http://api.junjiewang.top;
+  <span class="hljs-attribute">proxy_redirect</span> <span class="hljs-literal">off</span>;
+}</code></pre>
+<h2 id="日志">日志</h2>
+<h3 id="设置权限">设置权限</h3>
+<p>日志主要分为两种：<code>access_log</code> 和 <code>error_log</code>，设置路径之后，要确保用户有权限修改</p>
+<pre><code class="language-Bash">sudo chmod -R <span class="hljs-number">777</span> /<span class="hljs-built_in">var</span>/<span class="hljs-built_in">log</span>/nginx/access.<span class="hljs-built_in">log</span>
+sudo chmod -R <span class="hljs-number">777</span> /<span class="hljs-built_in">var</span>/<span class="hljs-built_in">log</span>/nginx/<span class="hljs-built_in">error</span>.<span class="hljs-built_in">log</span></code></pre>
+<h3 id="配置-access_log">配置 access_log</h3>
+<h4 id="配置">配置</h4>
+<p>其中 <code>main</code> 为 日志的名字，可自由定义。在格式设置中会用到</p>
+<pre><code class="language-Nginx">access_log  /var/<span class="hljs-built_in">log</span>/nginx/<span class="hljs-keyword">access</span>.<span class="hljs-built_in">log</span>  main;</code></pre>
+<h4 id="作用域">作用域</h4>
+<pre><code class="language-Nginx">http，<span class="hljs-keyword">server</span>，<span class="hljs-keyword">location</span>，limit_except</code></pre>
+<h4 id="格式设置">格式设置</h4>
+<p>通过 <code>log_format</code> 配置 <a href="http://nginx.org/en/docs/http/ngx_http_log_module.html#log_format" target="_blank">官网</a></p>
+<pre><code>log_format name [<span class="hljs-built_in">escape</span>=<span class="hljs-keyword">default</span>|json] <span class="hljs-built_in">string</span> ...;</code></pre><ul>
+<li><strong><em>name</em></strong> 格式名称，在access_log指令中引用</li>
+<li><strong><em>escape</em></strong> 设置变量中的字符编码方式是json还是default，默认是default</li>
+<li><strong><em>string</em></strong> 要定义的日志格式内容。该参数可以有多个。参数中可以使用Nginx变量</li>
+</ul>
+<p>&#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;<br/>                      &#39;$request_time &#39;<br/>                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;<br/>                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;</p>
+<h3 id="配置-error_log">配置 error_log</h3>
+<h4 id="配置-1">配置</h4>
+<p>其中 <code>main</code> 为 日志的名字，可自由定义。在格式设置中会用到</p>
+<pre><code class="language-Nginx"><span class="hljs-comment"># 格式</span>
+error_log <span class="hljs-built_in">file</span> [level]
+
+error_log  /var/<span class="hljs-built_in">log</span>/nginx/<span class="hljs-keyword">error</span>.<span class="hljs-built_in">log</span>;</code></pre>
+<p><code>level</code>: 指定日志的级别。level可以是<code>debug</code>, <code>info</code>, <code>notice</code>, <code>warn</code>, <code>error</code>, <code>crit</code>, <code>alert</code>,<code>emerg</code>中的任意值。可以看到其取值范围是按紧急程度从低到高排列的。只有日志的错误级别等于或高于level指定的值才会写入错误日志中。默认值是error</p>
+<h4 id="作用域-1">作用域</h4>
+<pre><code class="language-Nginx">main， http, mail, <span class="hljs-keyword">stream</span>, server, <span class="hljs-keyword">location</span></code></pre>
+<h2 id="参考文档">参考文档</h2>
+<p><a href="https://segmentfault.com/a/1190000013377493" target="_blank">Nginx日志配置详解</a></p>

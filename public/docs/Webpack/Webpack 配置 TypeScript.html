@@ -1,0 +1,129 @@
+<h1 id="webpack-配置-typescript">Webpack 配置 TypeScript</h1>
+<h2 id="loader-编译">loader 编译</h2>
+<h3 id="使用-awesome-typescript-loader-编译">使用 awesome-typescript-loader 编译</h3>
+<p><a href="https://github.com/s-panferov/awesome-typescript-loader" target="_blank">官网</a><br/>版本：5.2.1</p>
+<p>基础配置，默认实现了 tsx =&gt; js 的功能</p>
+<pre><code class="language-JavaScript"><span class="hljs-comment">// webpack.config.js</span>
+
+<span class="hljs-keyword">module</span>: {
+  rules: [
+    {
+      test: <span class="hljs-regexp">/\.tsx?$/</span>,
+      loader: <span class="hljs-string">'awesome-typescript-loader'</span>,
+      exclude: <span class="hljs-regexp">/node_modules/</span>
+    }
+}</code></pre>
+<p>修改配置(<code>tsconfig.json</code>)，配置参数参考官网</p>
+<pre><code class="language-JSON">{
+    <span class="hljs-attr">"useBabel"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"babelOptions"</span>: {
+        <span class="hljs-attr">"babelrc"</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">/* Important line */</span>
+        <span class="hljs-attr">"presets"</span>: [
+            [<span class="hljs-string">"@babel/preset-env"</span>, { <span class="hljs-attr">"targets"</span>: <span class="hljs-string">"last 2 versions, ie 11"</span>, <span class="hljs-attr">"modules"</span>: <span class="hljs-literal">false</span> }]
+        ]
+    },
+    <span class="hljs-attr">"babelCore"</span>: <span class="hljs-string">"@babel/core"</span>, <span class="hljs-comment">// needed for Babel v7</span>
+}</code></pre>
+<p>扩展配置</p>
+<pre><code class="language-JavaScript"><span class="hljs-comment">// webpack.config.js</span>
+<span class="hljs-keyword">const</span> styledComponentsTransformer = <span class="hljs-built_in">require</span>(<span class="hljs-string">'typescript-plugin-styled-components'</span>).default;
+<span class="hljs-keyword">const</span> keysTransformer = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ts-transformer-keys/transformer'</span>).default
+
+<span class="hljs-keyword">module</span>: {
+  rules: [
+    {
+      test: <span class="hljs-regexp">/\.tsx?$/</span>,
+      loader: <span class="hljs-string">'awesome-typescript-loader'</span>,
+      exclude: <span class="hljs-regexp">/node_modules/</span>,
+      options: {
+        <span class="hljs-comment">// ... other loader's options</span>
+        getCustomTransformers: <span class="hljs-function"><span class="hljs-params">program</span> =&gt;</span> ({
+            before: [
+                styledComponentsTransformer(),
+                keysTransformer(program)
+            ]
+        })
+      }
+    }
+}</code></pre>
+<h3 id="使用-babelpreset-typescript-编译">使用 @babel/preset-typescript 编译</h3>
+<p><a href="https://www.babeljs.cn/docs/babel-preset-typescript" target="_blank">官网</a></p>
+<p>基础配置</p>
+<pre><code class="language-JavaScript"><span class="hljs-comment">// webpack.config.js</span>
+
+<span class="hljs-keyword">module</span>: {
+  rules: [
+    {
+      test: <span class="hljs-regexp">/\.tsx?$/</span>,
+      loader: <span class="hljs-string">'babel-loader'</span>,
+      exclude: <span class="hljs-regexp">/node_modules/</span>
+    }
+}</code></pre>
+<pre><code class="language-JSON"><span class="hljs-comment">// .babelrc.json</span>
+
+{
+  <span class="hljs-attr">"presets"</span>: [
+    [<span class="hljs-string">"@babel/preset-env"</span>, {
+        <span class="hljs-attr">"modules"</span>: <span class="hljs-literal">false</span>
+    }],
+    <span class="hljs-string">"@babel/preset-react"</span>,
+    <span class="hljs-string">"@babel/preset-typescript"</span>
+  ],
+  <span class="hljs-attr">"plugins"</span>: [
+    [<span class="hljs-string">"babel-plugin-styled-components"</span>]
+  ]
+}</code></pre>
+<h4 id="代码检查">代码检查</h4>
+<p><a href="https://ts.xcatliu.com/engineering/lint" target="_blank">官网</a><br/>因为 <code>@babel/preset-typescript</code> 只是编译，不提供代码检查。所以需要安装专门的代码检查</p>
+<p>安装</p>
+<pre><code class="language-Bash">yarn <span class="hljs-keyword">add</span><span class="bash"> eslint -D</span>
+<span class="hljs-comment"># react</span>
+yarn <span class="hljs-keyword">add</span><span class="bash"> eslint-plugin-react -D</span>
+<span class="hljs-comment"># eslint 配置</span>
+yarn <span class="hljs-keyword">add</span><span class="bash"> @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-alloy -D</span></code></pre>
+<p>配置 <code>.eslintrc.js</code> 规则</p>
+<pre><code class="language-JavaScript">module.exports = {
+  extends: [
+    <span class="hljs-symbol">'alloy'</span>,
+    <span class="hljs-symbol">'alloy</span>/react',
+    <span class="hljs-symbol">'alloy</span>/typescript',
+  ],
+  env: {
+    browser: <span class="hljs-literal">true</span>,
+    node: <span class="hljs-literal">true</span>,
+    jest: <span class="hljs-literal">true</span>,
+  },
+  rules: {
+    <span class="hljs-symbol">'array</span>-callback-return': <span class="hljs-symbol">'off'</span>,
+    <span class="hljs-symbol">'no</span>-param-reassign': <span class="hljs-symbol">'off'</span>
+  }
+};</code></pre>
+<p>配置 <code>.eslintignore</code> 文件忽略</p>
+<pre><code><span class="hljs-keyword">build</span><span class="hljs-comment">/**</span></code></pre><p>配置 <code>webpack</code> 的配置文件</p>
+<pre><code class="language-JavaScript"><span class="hljs-selector-tag">module</span>: {
+    <span class="hljs-attribute">rules</span>: [
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: [
+          { loader: <span class="hljs-string">'babel-loader'</span> },
+          { <span class="hljs-attribute">loader</span>: <span class="hljs-string">'eslint-loader'</span> }
+        ]
+      }
+    ]
+  },</code></pre>
+<p>配置 Vscode<br/>安装 <code>ESLint</code> 插件，配置 <code>settings.json</code></p>
+<pre><code class="language-JSON"><span class="hljs-string">"editor.codeActionsOnSave"</span>: {
+  <span class="hljs-string">"source.fixAll.eslint"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-string">"source.organizeImports"</span>: <span class="hljs-literal">true</span>
+},
+<span class="hljs-string">"eslint.validate"</span>: [
+  <span class="hljs-string">"javascript"</span>,
+  <span class="hljs-string">"javascriptreact"</span>,
+  <span class="hljs-string">"typescript"</span>,
+  <span class="hljs-string">"html"</span>,
+  <span class="hljs-string">"vue"</span>,
+  <span class="hljs-string">"tsx"</span>
+],
+<span class="hljs-string">"typescript.tsdk"</span>: <span class="hljs-string">"node_modules/typescript/lib"</span>,
+<span class="hljs-string">"eslint.format.enable"</span>: <span class="hljs-literal">true</span></code></pre>

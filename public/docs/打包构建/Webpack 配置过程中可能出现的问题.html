@@ -1,0 +1,13 @@
+<h1 id="webpack-配置过程中可能出现的问题">Webpack 配置过程中可能出现的问题</h1>
+<h3 id="环境变量">环境变量</h3>
+<h4 id="packagejson-中配置环境变量，windows-系统出错">package.json 中配置环境变量，windows 系统出错</h4>
+<p>在Mac上，可以在<code>package.json</code>中配置：</p>
+<pre><code class="language-JSON"><span class="hljs-string">"scripts"</span>: {
+  <span class="hljs-string">"build"</span>：<span class="hljs-string">"NODE_ENV=production &amp;&amp; ..."</span>
+}</code></pre>
+<p>Windows 系统报错</p>
+<h4 id="解决方法">解决方法</h4>
+<p>安装 <code>cross-env</code> 模块</p>
+<pre><code class="language-JSON"><span class="hljs-string">"scripts"</span>: {
+  <span class="hljs-string">"build"</span>：<span class="hljs-string">"cross-env NODE_ENV=production &amp;&amp; ..."</span>
+}</code></pre>

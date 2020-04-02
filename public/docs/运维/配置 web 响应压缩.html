@@ -1,0 +1,90 @@
+<h1 id="配置-web-响应压缩">配置 web 响应压缩</h1>
+<h2 id="概述">概述</h2>
+<p>常用的压缩模式有：<code>gzip</code>, <code>deflate</code>, <code>br</code>。压缩模式之间差异体现在压缩比、压缩速度、服务器资源占用。</p>
+<ul>
+<li><code>Accept-Encoding</code>: 请求首部，说明支持的压缩模式；</li>
+<li><code>Content-Encoding</code>: 响应首部，说明实际采用压缩模式；</li>
+</ul>
+<p><strong><em>请求路径：</em></strong></p>
+<div class="mermaid-wrap">sequenceDiagram
+  participant C as 客户端
+  participant S as 服务端
+  C->>S: Accept-Encoding
+  S->>C: Content-Encoding
+  Note over C: 解压响应文本</div><h2 id="nginx-开启-gzip-压缩">nginx 开启 gzip 压缩</h2>
+<p>一般 nginx 默认开启 gzip 压缩，但是只针对 html 文件。不会压缩非常小的文件。<br/><a href="http://nginx.org/en/docs/http/ngx_http_gzip_module.html" target="_blank">nginx-gzip 官网</a></p>
+<pre><code class="language-Nginx">http {
+  gzip <span class="hljs-keyword">on</span>;
+  gzip_static <span class="hljs-keyword">on</span>;
+  gzip_min_length <span class="hljs-number">256</span>;
+  gzip_types <span class="hljs-built_in">text</span>/plain <span class="hljs-built_in">text</span>/css <span class="hljs-built_in">application</span>/json <span class="hljs-built_in">application</span>/x-javascript <span class="hljs-built_in">text</span>/xml <span class="hljs-built_in">application</span>/xml <span class="hljs-built_in">application</span>/xml+rss <span class="hljs-built_in">text</span>/javascript <span class="hljs-built_in">application</span>/javascript image/svg+xml;
+}</code></pre>
+<h2 id="nginx-开启-brotlibr-压缩">nginx 开启 Brotli(br) 压缩</h2>
+<p><strong><em>这里列举的是 centos 在已安装 nginx 下的情况下的配置方式</em></strong></p>
+<h3 id="下载-brotli">下载 Brotli</h3>
+<p><code>google/ngx_brotli</code> 从 16年12月的版本起，开始内置 <code>google/brotli</code>，所以不需要额外编译 <code>bagder/libbrotli</code> 库。</p>
+<pre><code class="language-Bash"><span class="hljs-built_in">cd</span> /usr/<span class="hljs-built_in">local</span>/src
+git <span class="hljs-built_in">clone</span> https://github.com/google/ngx_brotli.git</code></pre>
+<p>替换 <code>brotli</code></p>
+<pre><code class="language-Bash"><span class="hljs-keyword">cd</span> ngx_brotli/deps &amp;&amp; rm-rf brotli
+git clone git@github.com<span class="hljs-function">:google</span>/brotli.git
+<span class="hljs-keyword">cd</span> <span class="hljs-string">../</span> &amp;&amp; git submodule update <span class="hljs-params">--init</span></code></pre>
+<h3 id="编译-brotli-模块">编译 Brotli 模块</h3>
+<p>因为 nginx 已安装，但是需要生成动态模块。所以这里重新下载一个相同版本来生成。生成后，将生成的模块复制到原 nginx 对应文件（仅支持 <code>^nginx1.9.11</code>）。</p>
+<p>输入 <code>nginx -V</code> ，查看当前 nginx 信息</p>
+<ol>
+<li>nginx version: 版本信息，下载对应版本（举例用 <code>1.17.9</code>）</li>
+<li>--modules-path: 模块目录（举例用 <code>/usr/lib64/nginx/modules</code>）</li>
+</ol>
+<p>下载并解压</p>
+<pre><code class="language-Bash">wget http:<span class="hljs-comment">//nginx.org/download/nginx-1.17.9.tar.gz</span>
+tar -xvf nginx<span class="hljs-number">-1.17</span><span class="hljs-number">.9</span>.tar.gz</code></pre>
+<p>编译动态模块，<code>--add-dynamic-module</code> 后为上面下载 <code>ngx_brotli</code> 的绝对路径</p>
+<pre><code class="language-Bash"><span class="hljs-keyword">cd</span> nginx-1.17.9
+<span class="hljs-string">./configure</span> <span class="hljs-params">--with-compat</span> <span class="hljs-params">--add-dynamic-module=/usr/local/src/ngx_brotli</span>
+make modules</code></pre>
+<p>配置后，会在 <code>nginx-1.17.9/objs</code> 下生成需要的 <code>brotli</code> 模块。现在复制到原 <code>nginx</code> 模块目录下。</p>
+<pre><code class="language-Bash"><span class="hljs-keyword">cp</span> objs/{ngx_http_brotli_filter_module.<span class="hljs-keyword">so</span>,ngx_http_brotli_static_module.<span class="hljs-keyword">so</span>} /usr/lib64/nginx/modules</code></pre>
+<h3 id="注册-brotli-模块">注册 Brotli 模块</h3>
+<p>因为 nginx-1.17.9 默认引入模块的配置文件在 <code>/usr/share/nginx/modules/*.conf</code> 下。所以这里也在对应目录创建配置文件</p>
+<pre><code class="language-Bash"><span class="hljs-keyword">cd</span> /usr/share/nginx/modules/*.<span class="hljs-keyword">conf</span>
+touch <span class="hljs-keyword">mod</span>-brotli.<span class="hljs-keyword">conf</span></code></pre>
+<p>在配置文件中指向 <code>brotli</code> 的模块目录</p>
+<pre><code class="language-Bash">load_module <span class="hljs-string">"/usr/lib64/nginx/modules/ngx_http_brotli_filter_module.so"</span><span class="hljs-comment">;</span>
+load_module <span class="hljs-string">"/usr/lib64/nginx/modules/ngx_http_brotli_static_module.so"</span><span class="hljs-comment">;</span></code></pre>
+<p>如使用不同版本，可能需要在 <code>nginx.conf</code> 中 引入配置文件</p>
+<pre><code class="language-Bash"><span class="hljs-keyword">include</span> <span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/nginx/m</span>od-brotli.conf
+# 或者和 nginx-<span class="hljs-number">1.17</span>.<span class="hljs-number">9</span> 一样模糊匹配
+<span class="hljs-keyword">include</span> <span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/nginx/m</span>odules<span class="hljs-comment">/*.conf</span></code></pre>
+<h3 id="启用-brotli-模块">启用 Brotli 模块</h3>
+<p>Brotli和gzip是可以并存的，无需关闭gzip.</p>
+<p>配置 <code>nginx.conf</code> 文件</p>
+<pre><code class="language-Nginx">http {
+  <span class="hljs-comment"># brotli</span>
+  brotli <span class="hljs-keyword">on</span>;
+  brotli_static <span class="hljs-keyword">on</span>;
+  brotli_comp_level <span class="hljs-number">6</span>;
+  brotli_buffers <span class="hljs-number">16</span> <span class="hljs-number">8</span>k;
+  brotli_min_length <span class="hljs-number">20</span>;
+  brotli_types <span class="hljs-built_in">text</span>/plain <span class="hljs-built_in">text</span>/css <span class="hljs-built_in">application</span>/json <span class="hljs-built_in">application</span>/x-javascript <span class="hljs-built_in">text</span>/xml <span class="hljs-built_in">application</span>/xml <span class="hljs-built_in">application</span>/xml+rss <span class="hljs-built_in">text</span>/javascript <span class="hljs-built_in">application</span>/javascript image/svg+xml;
+}</code></pre>
+<p>反向代理不需要压缩，设置响应头</p>
+<pre><code>server {
+    <span class="hljs-string">...</span>
+    location / {
+        <span class="hljs-string">...</span>
+        proxy_<span class="hljs-keyword">set</span>_header Accept-Encoding <span class="hljs-string">""</span>;
+        <span class="hljs-string">...</span>
+    }
+    <span class="hljs-string">...</span>
+}</code></pre><h2 id="压缩测试">压缩测试</h2>
+<p>可以同时开启 gzip 和 br</p>
+<p><a href="https://tools.paulcalvano.com/compression.php" target="_blank">压缩测试</a></p>
+<h2 id="备注">备注</h2>
+<ul>
+<li>图片、视频之类的二进制文件，本身已经经过压缩。如再采用上述压缩模式，生成的文件实际上将比原始文件大</li>
+</ul>
+<h2 id="拓展">拓展</h2>
+<p>配置压缩之后，每次请求都会消耗服务器资源压缩文件。建议使用预压缩。Nginx 有响应的预压缩模块，也可以在用 webpack 打包时预压缩。（预压缩一定要开启 gzip_static 或 brotli_static）<br/>推荐阅读 <a href="/article/rttude2b1" target="_blank">Webpack 生成预压缩 gzip、brotli 文件</a></p>
+<h2 id="参考文档">参考文档</h2>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Encoding" target="_blank">MDN</a><br/><a href="https://expeditedsecurity.com/blog/nginx-brotli/" target="_blank">&#39;You can&#39;t use Brotli for dynamic content&#39;</a><br/><a href="https://github.com/google/ngx_brotli" target="_blank">ngx_brotli</a></p>

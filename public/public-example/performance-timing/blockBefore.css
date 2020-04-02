@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('./fontawesome-webfont.woff2?v=4.7.0');
+  font-weight: normal;
+  font-style: normal
+}
+
+body {
+  background-color: yellow;
+  font: normal normal normal 14px/1 FontAwesome;
+}

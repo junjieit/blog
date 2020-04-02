@@ -1,0 +1,35 @@
+<h1 id="react-类组件优化性能的几个方法">React 类组件优化性能的几个方法</h1>
+<h2 id="继承-reactpurecomponent">继承 React.PureComponent</h2>
+<p><code>React</code> 类组件需要继承 <code>React.PureComponent</code> 或 <code>React.Component</code>。<code>React.PureComponent</code> 只会进行浅比较来判断组件是否更新。</p>
+<pre><code class="language-JavaScript"><span class="hljs-keyword">import</span> <span class="hljs-type">React</span> { <span class="hljs-type">PureComponent</span> } from <span class="hljs-symbol">'reac</span>t';
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">PureComponent</span> </span>{
+  <span class="hljs-comment">//...</span>
+}</code></pre>
+<h2 id="使用-shouldcomponentupdate-判断是否更新">使用 shouldComponentUpdate 判断是否更新</h2>
+<pre><code class="language-JavaScript"><span class="hljs-keyword">import</span> React from <span class="hljs-string">'react'</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CounterButton</span> <span class="hljs-title">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  <span class="hljs-keyword">constructor</span>(props) {
+    <span class="hljs-keyword">super</span>(props);
+    <span class="hljs-keyword">this</span>.state = {count: <span class="hljs-number">1</span>};
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.props.color !== nextProps.color) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state.count !== nextState.count) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+
+  render() {
+    <span class="hljs-keyword">return</span> (
+      &lt;button
+        color={<span class="hljs-keyword">this</span>.props.color}
+        onClick={() =&gt; <span class="hljs-keyword">this</span>.setState(state =&gt; ({count: state.count + <span class="hljs-number">1</span>}))}&gt;
+        Count: {<span class="hljs-keyword">this</span>.state.count}
+      &lt;/button&gt;
+    );
+  }
+}</code></pre>

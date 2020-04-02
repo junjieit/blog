@@ -1,0 +1,34 @@
+<h1 id="使用-webpack-插件生成-sw-缓存">使用 webpack 插件生成 SW 缓存</h1>
+<h2 id="概述">概述</h2>
+<p>现在大多浏览器都支持 Service Worke 缓存，但是原生配置相对麻烦。所以谷歌推出了 <code>Workbox</code> 插件方便配置。以及推出了对应的 <code>Webpack</code> 的插件。本文简单介绍一下这款插件的用法。</p>
+<h2 id="配置-workbox-webpack-plugin-插件">配置 workbox-webpack-plugin 插件</h2>
+<p>插件有 <code>GenerateSW</code> 和 <code>InjectManifest</code> 两个对象，可以选择其中一个配置。</p>
+<h3 id="generatesw-配置">GenerateSW 配置</h3>
+<p>、<code>webpack.config.js</code> 配置（<a href="https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-webpack-plugin.GenerateSW#GenerateSW" target="_blank">GenerateSW 参数API</a>）。</p>
+<pre><code class="language-JavaScript"><span class="hljs-keyword">const</span> { GenerateSW } = require(<span class="hljs-string">'workbox-webpack-plugin'</span>)
+
+<span class="hljs-keyword">module</span>.<span class="hljs-keyword">exports</span> = {
+  <span class="hljs-comment">// Other webpack config...</span>
+  plugins: [
+    <span class="hljs-comment">// Other plugins...</span>
+    <span class="hljs-keyword">new</span> GenerateSW({
+      <span class="hljs-comment">// options...</span>
+    })
+  ]
+};</code></pre>
+<h3 id="injectmanifest-配置">InjectManifest 配置</h3>
+<p>、<code>webpack.config.js</code> 配置（<a href="https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-webpack-plugin.InjectManifest#InjectManifest" target="_blank">InjectManifest 参数API</a>）。</p>
+<pre><code class="language-JavaScript"><span class="hljs-keyword">const</span> { InjectManifest } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'workbox-webpack-plugin'</span>)
+
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-comment">// Other webpack config...</span>
+  <span class="hljs-attr">plugins</span>: [
+    <span class="hljs-comment">// Other plugins...</span>
+    或者使用 InjectManifest
+    <span class="hljs-keyword">new</span> InjectManifest({
+      <span class="hljs-comment">// options...</span>
+    })
+  ]
+};</code></pre>
+<h2 id="参考文档">参考文档</h2>
+<p><a href="https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin" target="_blank">workbox-webpack-plugin</a></p>

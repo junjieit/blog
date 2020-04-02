@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <title>junjie</title>
+  <style>
+    *{line-height: 1;box-sizing: border-box;}
+    html, body{margin: 0;padding: 0;}
+    body {background-color: #eee;font-size: 14px;}
+    #temp-head{background-color: #fff;display: flex;align-items: center;padding-left: 10vw;height: 2.4rem;margin-bottom: 8px;box-shadow: 0 1px 2px -2px rgba(0,0,0,0.16),0 3px 6px 0 rgba(0,0,0,0.12),0 5px 12px 4px rgba(0,0,0,0.09);}
+    #temp-body{background-color: #fff;height: 70vh;width: 80vw;margin: 0 auto;box-shadow: 0 1px 2px -2px rgba(0,0,0,0.16),0 3px 6px 0 rgba(0,0,0,0.12),0 5px 12px 4px rgba(0,0,0,0.09);}
+
+    @media (max-width: 600px) {
+      #temp-body{width: 100vw;}
+    }
+
+    @keyframes skeleton-loading {
+      0% {
+          background-position: 100% 50%
+      }
+
+      100% {
+          background-position: 0 50%
+      }
+    }
+
+    .skeleton-wrap{padding: 30px 20px 0;}
+    .skeleton-title{margin: 0;height: 16px;}
+    .skeleton-title ,.skeleton-paragraph li{background: linear-gradient(90deg,#f2f2f2 25%,#e6e6e6 37%,#f2f2f2 63%);background-size: 400% 100%;animation: skeleton-loading 1.4s ease infinite;}
+    .skeleton-paragraph{margin: 0;padding: 0;}
+    .skeleton-paragraph li {list-style: none;height: 16px;margin-top: 16px;}
+  </style>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112099216-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-112099216-2');
+  </script>
+</head>
+<body>
+  <div id="app">
+    <div id="temp-head">
+      <ul class="skeleton-paragraph" style="width:61%;">
+        <li style="margin: 0;"></li>
+      </ul>
+    </div>
+    <div id="temp-body">
+      <div class="skeleton-wrap">
+        <p class="skeleton-title" style="width:38%;"></p>
+        <ul class="skeleton-paragraph">
+          <li></li>
+          <li></li>
+          <li style="width:61%;"></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <% if (process.env.NODE_ENV === 'production') { %>
+  <script crossorigin src="https://unpkg.com/react@16.13.1//umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16.13.1//umd/react-dom.production.min.js"></script>
+  <% } %>
+</body>
+</html>

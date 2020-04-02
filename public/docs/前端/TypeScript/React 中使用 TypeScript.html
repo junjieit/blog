@@ -1,0 +1,12 @@
+<h1 id="react-中使用-typescript">React 中使用 TypeScript</h1>
+<h3 id="dom-事件">DOM 事件</h3>
+<h4 id="change-事件">Change 事件</h4>
+<pre><code class="language-TypeScript">onChange =<span class="hljs-function"> (<span class="hljs-params">e</span>: R<span class="hljs-params">eact</span>.F<span class="hljs-params">ormEvent</span>&lt;HTMLI<span class="hljs-params">nputElement</span>&gt;) =&gt;</span> {
+    const newValue = e.currentTarget.value;
+}
+onChange =<span class="hljs-function"> (<span class="hljs-params">e</span>: R<span class="hljs-params">eact</span>.C<span class="hljs-params">hangeEvent</span>&lt;HTMLI<span class="hljs-params">nputElement</span>&gt;)=&gt;</span> {
+   const newValue = e.target.value;
+}</code></pre>
+<p><a href="https://stackoverflow.com/questions/40676343/typescript-input-onchange-event-target-value" target="_blank">参考</a></p>
+<h2 id="参考文档">参考文档</h2>
+<p><a href="https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react" target="_blank">@types/react</a></p>

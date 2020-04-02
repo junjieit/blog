@@ -1,0 +1,9 @@
+<h1 id="根据-react-diff-算法以保持高性能的-render-写法">根据 React diff 算法以保持高性能的 render 写法</h1>
+<h2 id="尽量不改变元素类型">尽量不改变元素类型</h2>
+<blockquote>
+<p>无论什么时候，当根元素类型不同时，React 将会销毁原先的树并重写构建新的树。从 <a> 到 <img> ，或者从 <Article> 到 <Comment> ，从 <Button> 到 <div> – 这些都将导致全部重新构建</p>
+</blockquote>
+<h2 id="循环渲染中的-key-应和数据有对应关系">循环渲染中的 key 应和数据有对应关系</h2>
+<p>当改变循环渲染的 <code>data</code> 时。如果没有 <code>key</code>，将会重新渲染循环列表中的所有子节点。有 <code>key</code> 的情况，会根据 <code>key</code> 来重新渲染。所以 <code>key</code> 如果是随意生成的随机数，也不能很好的比对渲染。最好是和 数组其他数据有关联的 <code>id</code> 之类数据。</p>
+<h2 id="参考文档">参考文档</h2>
+<p><a href="http://react.html.cn/docs/reconciliation.html" target="_blank">一致性比较</a></p>

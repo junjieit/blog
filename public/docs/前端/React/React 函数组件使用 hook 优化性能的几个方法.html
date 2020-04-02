@@ -1,0 +1,62 @@
+<h1 id="react-函数组件使用-hook-优化性能的几个方法">React 函数组件使用 hook 优化性能的几个方法</h1>
+<h2 id="概述">概述</h2>
+<p>当函数组件使用 <code>hoos</code> 时，每次状态更改，内部函数都会被重新创建。保持组件足够小，是优化性能的一方面。除此之外，我们可以让 <code>React</code> 知道。每次更改，对应需要重新创建的部分。从而更细粒度的函数的重新创建。但必须谨慎使用，因为没有重现创建的内部函数，函数内部的字段也不会更新。</p>
+<h2 id="使用-useeffect、uselayouteffect">使用 useEffect、useLayoutEffect</h2>
+<p><code>useEffect</code> 第二个参数为依赖的字段数组，变动才执行 <code>useEffect</code> 方法。</p>
+<p><strong><em><code>useLayoutEffect</code> 基本和 <code>useEffect</code>一致，只是在 DOM 变化后同步触发，可能阻止视觉更新</em></strong></p>
+<pre><code class="language-JavaScript"><span class="hljs-keyword">import</span> React, { useState, useEffect } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>
+
+<span class="hljs-keyword">const</span> [count, setCount] = useState(<span class="hljs-number">0</span>)
+<span class="hljs-keyword">const</span> [text, updateText] = useState(<span class="hljs-string">''</span>)
+
+useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(count) <span class="hljs-comment">// 仅当 count 更改时，才会执行方法</span>
+}, [count])
+
+<span class="hljs-keyword">return</span> (
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>You clicked {count} times<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{text}</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">{e</span> =&gt;</span> updateText(e.target.value)} /&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setCount(count + 1)}&gt;
+      Click me
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+)</code></pre>
+<h2 id="使用-usecallback、usememo">使用 useCallback、useMemo</h2>
+<p><code>useCallback</code> 和 <code>useEffect</code> 类似。第一个参数为回调，第二个参数为依赖的字段数组。不同的是，这会返回一个函数。在需要的时候调用。</p>
+<pre><code class="language-JavaScript"><span class="hljs-keyword">import</span> React, { useState, useCallback } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>
+
+<span class="hljs-keyword">const</span> [count, setCount] = useState(<span class="hljs-number">0</span>)
+<span class="hljs-keyword">const</span> [text, updateText] = useState(<span class="hljs-string">''</span>)
+
+<span class="hljs-keyword">const</span> handleClick = useCallback(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(count) <span class="hljs-comment">// updateText 是，并不会重新创建此方法。只有在更新 setCount 是才会</span>
+}, [count])
+
+<span class="hljs-keyword">return</span> (
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{count}</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">{e</span> =&gt;</span> setCount(e.target.value)} /&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{text}</span> <span class="hljs-attr">onChange</span>=<span class="hljs-string">{e</span> =&gt;</span> updateText(e.target.value)} /&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{handleClick}</span>&gt;</span>
+      Click me
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+)</code></pre>
+<h3 id="usecallback-vs-usememo">useCallback vs useMemo</h3>
+<blockquote>
+<p><code>useCallback(fn, inputs)</code> 等价于 <code>useMemo(() =&gt; fn, inputs)</code></p>
+</blockquote>
+<p>但是 <code>memoized</code> 的内容不一样。<code>useCallback</code> <code>memoized</code> 第一个回调函数，<code>useMemo</code> <code>memoized</code> 第一个回调函数执行后的值.</p>
+<h2 id="使用-reactmemo">使用 React.memo</h2>
+<p><code>React.memo</code> 类似于 <code>React.PureComponent</code>，只是用于组件。有两个参数。第一个参数为要传入的组件，第二个参数是一个回调函数。用于控制是否重新渲染。</p>
+<pre><code class="language-JavaScript"><span class="hljs-keyword">function</span> <span class="hljs-constructor">MyComponent(<span class="hljs-params">props</span>)</span> {
+  <span class="hljs-comment">/* render using props */</span>
+}
+<span class="hljs-keyword">function</span> are<span class="hljs-constructor">Equal(<span class="hljs-params">prevProps</span>, <span class="hljs-params">nextProps</span>)</span> {
+  <span class="hljs-comment">/*
+  return true if passing nextProps to render would return
+  the same result as passing prevProps to render,
+  otherwise return false
+  */</span>
+}
+export default <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">React</span>.</span></span>memo(MyComponent, areEqual);</code></pre>

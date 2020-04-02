@@ -1,0 +1,48 @@
+<h1 id="webpack-生成预压缩-gzip、brotli-文件">Webpack 生成预压缩 gzip、brotli 文件</h1>
+<h2 id="概述">概述</h2>
+<p>代理服务器配置压缩模式之后，每次请求网页都会在服务器压缩。消耗服务器资源，及增加了压缩时间。本文介绍使用 <code>Webpack</code> 插件预压缩文件，提升网页响应速度。</p>
+<h2 id="compression-webpack-plugin-插件配置"><code>compression-webpack-plugin</code> 插件配置</h2>
+<p><strong><em><code>node</code> 版本需大于等于 <code>8.9.0</code> 才能使用此插件。大于等于 <code>11.7.0</code> 才支持 <code>Brotli</code>。</em></strong></p>
+<h4 id="安装">安装</h4>
+<pre><code class="language-Bash">yarn <span class="hljs-keyword">add</span><span class="bash"> compression-webpack-plugin -D</span></code></pre>
+<h4 id="配置">配置</h4>
+<p><code>webpack.config.js</code> 配置文件</p>
+<pre><code class="language-JavaScript"><span class="hljs-string">module.exports</span> <span class="hljs-string">=</span> <span class="hljs-string">{</span>
+  <span class="hljs-attr">plugins:</span> <span class="hljs-string">[</span>
+    <span class="hljs-string">new</span> <span class="hljs-string">CompressionPlugin({</span>
+      <span class="hljs-attr">filename:</span> <span class="hljs-string">'[path].gz[query]'</span><span class="hljs-string">,</span>
+      <span class="hljs-attr">algorithm:</span> <span class="hljs-string">'gzip'</span><span class="hljs-string">,</span>
+      <span class="hljs-attr">test:</span> <span class="hljs-string">/\.js$|\.css$|\.html$/,</span>
+      <span class="hljs-attr">threshold:</span> <span class="hljs-number">10240</span><span class="hljs-string">,</span>
+      <span class="hljs-attr">minRatio:</span> <span class="hljs-number">0.8</span><span class="hljs-string">,</span>
+    <span class="hljs-string">}),</span>
+    <span class="hljs-string">new</span> <span class="hljs-string">CompressionPlugin({</span>
+      <span class="hljs-attr">filename:</span> <span class="hljs-string">'[path].br[query]'</span><span class="hljs-string">,</span>
+      <span class="hljs-attr">algorithm:</span> <span class="hljs-string">'brotliCompress'</span><span class="hljs-string">,</span>
+      <span class="hljs-attr">test:</span> <span class="hljs-string">/\.(js|css|html|svg)$/,</span>
+      <span class="hljs-attr">compressionOptions:</span> <span class="hljs-string">{</span> <span class="hljs-attr">level:</span> <span class="hljs-number">11</span> <span class="hljs-string">},</span>
+      <span class="hljs-attr">threshold:</span> <span class="hljs-number">10240</span><span class="hljs-string">,</span>
+      <span class="hljs-attr">minRatio:</span> <span class="hljs-number">0.8</span><span class="hljs-string">,</span>
+    <span class="hljs-string">}),</span>
+  <span class="hljs-string">],</span>
+<span class="hljs-string">};</span></code></pre>
+<h2 id="nginx-配置">Nginx 配置</h2>
+<p><code>Nginx</code> 需先配置对应的压缩模式，可参考 <a href="/article/6ALMAsdyR" target="_blank">配置 web 响应压缩</a></p>
+<p><strong><em>必须开启静态压缩，否则不生效，还是会在服务器在线生成</em></strong></p>
+<pre><code class="language-Nginx"><span class="hljs-section">http</span> {
+  <span class="hljs-attribute">gzip</span> <span class="hljs-literal">on</span>;
+  <span class="hljs-attribute">gzip_static</span> <span class="hljs-literal">on</span>;
+  <span class="hljs-comment"># ...</span>
+
+  <span class="hljs-attribute">brotli</span> <span class="hljs-literal">on</span>;
+  <span class="hljs-attribute">brotli_static</span> <span class="hljs-literal">on</span>;
+  <span class="hljs-comment"># ...</span>
+}</code></pre>
+<h2 id="验证是否生效">验证是否生效</h2>
+<p>查看响应首部 <code>Etag</code> 是否以 <code>W/</code> 开头：</p>
+<ul>
+<li>是：服务器在线生成</li>
+<li>否：读取的预压缩文件</li>
+</ul>
+<h2 id="参考文档">参考文档</h2>
+<p><a href="https://webpack.js.org/plugins/compression-webpack-plugin/" target="_blank">CompressionWebpackPlugin</a></p>

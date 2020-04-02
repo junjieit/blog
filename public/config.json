@@ -1,0 +1,745 @@
+{
+  "navs": [
+    {
+      "id": "ioO2i5dRR9",
+      "name": "渲染优化",
+      "childrens": []
+    },
+    {
+      "id": "YnWD94mgi",
+      "name": "运维",
+      "childrens": []
+    },
+    {
+      "id": "ISRsjbLK9",
+      "name": "前端",
+      "childrens": [
+        {
+          "id": "Lwhiir9zcy",
+          "name": "JavaScript",
+          "childrens": []
+        },
+        {
+          "id": "KQdKxrt8s",
+          "name": "React",
+          "childrens": []
+        },
+        {
+          "id": "8VapLVB3Sd",
+          "name": "TypeScript",
+          "childrens": []
+        }
+      ]
+    },
+    {
+      "id": "wYeuai7zm4",
+      "name": "打包构建",
+      "childrens": []
+    }
+  ],
+  "articles": {
+    "index": {
+      "lkYXrXcb_q": {
+        "id": "lkYXrXcb_q",
+        "navsId": "index",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/index.md",
+        "title": "index",
+        "prevFolderName": "",
+        "directorys": []
+      }
+    },
+    "ioO2i5dRR9": {
+      "Aoz0jZqcU": {
+        "id": "Aoz0jZqcU",
+        "navsId": "ioO2i5dRR9",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/渲染优化/前端渲染优化索引.md",
+        "title": "前端渲染优化索引",
+        "prevFolderName": "/渲染优化",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述"
+          },
+          {
+            "text": "页面加载过程",
+            "level": 2,
+            "id": "页面加载过程"
+          },
+          {
+            "text": "索引",
+            "level": 2,
+            "id": "索引",
+            "childrens": [
+              {
+                "text": "浏览器缓存",
+                "level": 3,
+                "id": "浏览器缓存"
+              },
+              {
+                "text": "DNS 解析",
+                "level": 3,
+                "id": "dns-解析"
+              },
+              {
+                "text": "响应请求",
+                "level": 3,
+                "id": "响应请求"
+              }
+            ]
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      },
+      "6AiPsRFx7X": {
+        "id": "6AiPsRFx7X",
+        "navsId": "ioO2i5dRR9",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/渲染优化/DNS 解析优化.md",
+        "title": "DNS 解析优化",
+        "prevFolderName": "/渲染优化",
+        "directorys": [
+          {
+            "text": "优化方式",
+            "level": 2,
+            "id": "优化方式"
+          },
+          {
+            "text": "解析过程",
+            "level": 2,
+            "id": "解析过程"
+          },
+          {
+            "text": "清除 DNS 缓存",
+            "level": 2,
+            "id": "清除-dns-缓存"
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      },
+      "gQE6otkr_8": {
+        "id": "gQE6otkr_8",
+        "navsId": "ioO2i5dRR9",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/渲染优化/使用 webpack 压缩分离代码.md",
+        "title": "使用 webpack 压缩分离代码",
+        "prevFolderName": "/渲染优化",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述"
+          },
+          {
+            "text": "分析工具",
+            "level": 2,
+            "id": "分析工具",
+            "childrens": [
+              {
+                "text": "webpack 分析",
+                "level": 3,
+                "id": "webpack-分析"
+              },
+              {
+                "text": "使用 webpack-bundle-analyzer 分析",
+                "level": 3,
+                "id": "使用-webpack-bundle-analyzer-分析"
+              }
+            ]
+          },
+          {
+            "text": "代码分离，按需加载",
+            "level": 2,
+            "id": "代码分离，按需加载",
+            "childrens": [
+              {
+                "text": "分离方式",
+                "level": 3,
+                "id": "分离方式"
+              },
+              {
+                "text": "使用方式",
+                "level": 3,
+                "id": "使用方式"
+              },
+              {
+                "text": "问题",
+                "level": 3,
+                "id": "问题"
+              }
+            ]
+          },
+          {
+            "text": "代码压缩",
+            "level": 2,
+            "id": "代码压缩"
+          },
+          {
+            "text": "拓展阅读",
+            "level": 2,
+            "id": "拓展阅读"
+          }
+        ]
+      },
+      "XRcwM_YVkj": {
+        "id": "XRcwM_YVkj",
+        "navsId": "ioO2i5dRR9",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/渲染优化/浏览器的缓存机制.md",
+        "title": "浏览器的缓存机制",
+        "prevFolderName": "/渲染优化",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述"
+          },
+          {
+            "text": "强制缓存",
+            "level": 2,
+            "id": "强制缓存"
+          },
+          {
+            "text": "协商缓存",
+            "level": 2,
+            "id": "协商缓存"
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      },
+      "W_7WWqkw9": {
+        "id": "W_7WWqkw9",
+        "navsId": "ioO2i5dRR9",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/渲染优化/使用 PerformanceTiming 来测量网页具体的响应过程.md",
+        "title": "使用 PerformanceTiming 来测量网页具体的响应过程",
+        "prevFolderName": "/渲染优化",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述"
+          },
+          {
+            "text": "关键节点备注",
+            "level": 2,
+            "id": "关键节点备注"
+          },
+          {
+            "text": "相关名词对应",
+            "level": 2,
+            "id": "相关名词对应"
+          },
+          {
+            "text": "时间线",
+            "level": 2,
+            "id": "时间线"
+          },
+          {
+            "text": "关联事件",
+            "level": 2,
+            "id": "关联事件",
+            "childrens": [
+              {
+                "text": "document.readyState",
+                "level": 3,
+                "id": "documentreadystate"
+              },
+              {
+                "text": "DOMContentLoaded",
+                "level": 3,
+                "id": "domcontentloaded"
+              },
+              {
+                "text": "load",
+                "level": 3,
+                "id": "load"
+              },
+              {
+                "text": "unload",
+                "level": 3,
+                "id": "unload"
+              }
+            ]
+          },
+          {
+            "text": "阻塞测试",
+            "level": 2,
+            "id": "阻塞测试"
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      },
+      "Ue8uE5Zvf": {
+        "id": "Ue8uE5Zvf",
+        "navsId": "ioO2i5dRR9",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/渲染优化/使用 webpack 插件生成 SW 缓存.md",
+        "title": "使用 webpack 插件生成 SW 缓存",
+        "prevFolderName": "/渲染优化",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述"
+          },
+          {
+            "text": "配置 workbox-webpack-plugin 插件",
+            "level": 2,
+            "id": "配置-workbox-webpack-plugin-插件",
+            "childrens": [
+              {
+                "text": "GenerateSW 配置",
+                "level": 3,
+                "id": "generatesw-配置"
+              },
+              {
+                "text": "InjectManifest 配置",
+                "level": 3,
+                "id": "injectmanifest-配置"
+              }
+            ]
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      },
+      "rttude2b1": {
+        "id": "rttude2b1",
+        "navsId": "ioO2i5dRR9",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/Webpack/Webpack 生成预压缩 gzip、brotli 文件.md",
+        "title": "Webpack 生成预压缩 gzip、brotli 文件",
+        "prevFolderName": "/Webpack",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述"
+          },
+          {
+            "text": "<code>compression-webpack-plugin</code> 插件配置",
+            "level": 2,
+            "id": "compression-webpack-plugin-插件配置"
+          },
+          {
+            "text": "Nginx 配置",
+            "level": 2,
+            "id": "nginx-配置"
+          },
+          {
+            "text": "验证是否生效",
+            "level": 2,
+            "id": "验证是否生效"
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      },
+      "ciZEE2fXV9": {
+        "id": "ciZEE2fXV9",
+        "navsId": "ioO2i5dRR9",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/渲染优化/Webpack 生成预压缩 gzip、brotli 文件.md",
+        "title": "Webpack 生成预压缩 gzip、brotli 文件",
+        "prevFolderName": "/渲染优化",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述"
+          },
+          {
+            "text": "<code>compression-webpack-plugin</code> 插件配置",
+            "level": 2,
+            "id": "compression-webpack-plugin-插件配置"
+          },
+          {
+            "text": "Nginx 配置",
+            "level": 2,
+            "id": "nginx-配置"
+          },
+          {
+            "text": "验证是否生效",
+            "level": 2,
+            "id": "验证是否生效"
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      }
+    },
+    "YnWD94mgi": {
+      "aAbDkErXc4": {
+        "id": "aAbDkErXc4",
+        "navsId": "YnWD94mgi",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/运维/nginx 配置.md",
+        "title": "nginx 配置",
+        "prevFolderName": "/运维",
+        "directorys": [
+          {
+            "text": "查看配置文件",
+            "level": 2,
+            "id": "查看配置文件"
+          },
+          {
+            "text": "访问配置",
+            "level": 2,
+            "id": "访问配置"
+          },
+          {
+            "text": "单页面配置",
+            "level": 2,
+            "id": "单页面配置"
+          },
+          {
+            "text": "允许跨域",
+            "level": 2,
+            "id": "允许跨域"
+          },
+          {
+            "text": "反向代理",
+            "level": 2,
+            "id": "反向代理"
+          },
+          {
+            "text": "日志",
+            "level": 2,
+            "id": "日志",
+            "childrens": [
+              {
+                "text": "设置权限",
+                "level": 3,
+                "id": "设置权限"
+              },
+              {
+                "text": "配置 access_log",
+                "level": 3,
+                "id": "配置-access_log"
+              },
+              {
+                "text": "配置 error_log",
+                "level": 3,
+                "id": "配置-error_log"
+              }
+            ]
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      },
+      "6ALMAsdyR": {
+        "id": "6ALMAsdyR",
+        "navsId": "YnWD94mgi",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/运维/配置 web 响应压缩.md",
+        "title": "配置 web 响应压缩",
+        "prevFolderName": "/运维",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述"
+          },
+          {
+            "text": "nginx 开启 gzip 压缩",
+            "level": 2,
+            "id": "nginx-开启-gzip-压缩"
+          },
+          {
+            "text": "nginx 开启 Brotli(br) 压缩",
+            "level": 2,
+            "id": "nginx-开启-brotlibr-压缩",
+            "childrens": [
+              {
+                "text": "下载 Brotli",
+                "level": 3,
+                "id": "下载-brotli"
+              },
+              {
+                "text": "编译 Brotli 模块",
+                "level": 3,
+                "id": "编译-brotli-模块"
+              },
+              {
+                "text": "注册 Brotli 模块",
+                "level": 3,
+                "id": "注册-brotli-模块"
+              },
+              {
+                "text": "启用 Brotli 模块",
+                "level": 3,
+                "id": "启用-brotli-模块"
+              }
+            ]
+          },
+          {
+            "text": "压缩测试",
+            "level": 2,
+            "id": "压缩测试"
+          },
+          {
+            "text": "备注",
+            "level": 2,
+            "id": "备注"
+          },
+          {
+            "text": "拓展",
+            "level": 2,
+            "id": "拓展"
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      }
+    },
+    "Lwhiir9zcy": {
+      "n-5J-3Uwu5": {
+        "id": "n-5J-3Uwu5",
+        "navsId": "Lwhiir9zcy",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/前端/JavaScript/ECMAScript 标准.md",
+        "title": "ECMAScript 标准",
+        "prevFolderName": "/前端/JavaScript",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述",
+            "childrens": [
+              {
+                "text": "版本简化版(5.1 开始)",
+                "level": 3,
+                "id": "版本简化版51-开始"
+              }
+            ]
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      }
+    },
+    "KQdKxrt8s": {
+      "aD11Lk-_hy": {
+        "id": "aD11Lk-_hy",
+        "navsId": "KQdKxrt8s",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/前端/React/React 函数组件使用 hook 优化性能的几个方法.md",
+        "title": "React 函数组件使用 hook 优化性能的几个方法",
+        "prevFolderName": "/前端/React",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述"
+          },
+          {
+            "text": "使用 useEffect、useLayoutEffect",
+            "level": 2,
+            "id": "使用-useeffect、uselayouteffect"
+          },
+          {
+            "text": "使用 useCallback、useMemo",
+            "level": 2,
+            "id": "使用-usecallback、usememo",
+            "childrens": [
+              {
+                "text": "useCallback vs useMemo",
+                "level": 3,
+                "id": "usecallback-vs-usememo"
+              }
+            ]
+          },
+          {
+            "text": "使用 React.memo",
+            "level": 2,
+            "id": "使用-reactmemo"
+          }
+        ]
+      },
+      "-Amiym1P1M": {
+        "id": "-Amiym1P1M",
+        "navsId": "KQdKxrt8s",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/前端/React/React 类组件优化性能的几个方法.md",
+        "title": "React 类组件优化性能的几个方法",
+        "prevFolderName": "/前端/React",
+        "directorys": [
+          {
+            "text": "继承 React.PureComponent",
+            "level": 2,
+            "id": "继承-reactpurecomponent"
+          },
+          {
+            "text": "使用 shouldComponentUpdate 判断是否更新",
+            "level": 2,
+            "id": "使用-shouldcomponentupdate-判断是否更新"
+          }
+        ]
+      },
+      "Ydstr9nqQz": {
+        "id": "Ydstr9nqQz",
+        "navsId": "KQdKxrt8s",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/前端/React/根据 React diff 算法以保持高性能的 render 写法.md",
+        "title": "根据 React diff 算法以保持高性能的 render 写法",
+        "prevFolderName": "/前端/React",
+        "directorys": [
+          {
+            "text": "尽量不改变元素类型",
+            "level": 2,
+            "id": "尽量不改变元素类型"
+          },
+          {
+            "text": "循环渲染中的 key 应和数据有对应关系",
+            "level": 2,
+            "id": "循环渲染中的-key-应和数据有对应关系"
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      }
+    },
+    "8VapLVB3Sd": {
+      "FFL8UETXGc": {
+        "id": "FFL8UETXGc",
+        "navsId": "8VapLVB3Sd",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/前端/TypeScript/React 中使用 TypeScript.md",
+        "title": "React 中使用 TypeScript",
+        "prevFolderName": "/前端/TypeScript",
+        "directorys": [
+          {
+            "text": "DOM 事件",
+            "level": 3,
+            "id": "dom-事件"
+          },
+          {
+            "text": "参考文档",
+            "level": 2,
+            "id": "参考文档"
+          }
+        ]
+      },
+      "GiEs8k_-ZW": {
+        "id": "GiEs8k_-ZW",
+        "navsId": "8VapLVB3Sd",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/前端/TypeScript/TypeScript 语法应用.md",
+        "title": "TypeScript 语法应用",
+        "prevFolderName": "/前端/TypeScript",
+        "directorys": [
+          {
+            "text": "概述",
+            "level": 2,
+            "id": "概述"
+          },
+          {
+            "text": "类型声明",
+            "level": 2,
+            "id": "类型声明"
+          },
+          {
+            "text": "数组",
+            "level": 2,
+            "id": "数组",
+            "childrens": [
+              {
+                "text": "只读数组",
+                "level": 3,
+                "id": "只读数组"
+              }
+            ]
+          },
+          {
+            "text": "对象",
+            "level": 2,
+            "id": "对象",
+            "childrens": [
+              {
+                "text": "索引签名",
+                "level": 3,
+                "id": "索引签名"
+              },
+              {
+                "text": "会被绕开的对象赋值",
+                "level": 3,
+                "id": "会被绕开的对象赋值"
+              }
+            ]
+          },
+          {
+            "text": "类型断言",
+            "level": 2,
+            "id": "类型断言"
+          }
+        ]
+      },
+      "Wf4HbRfPxH": {
+        "id": "Wf4HbRfPxH",
+        "navsId": "8VapLVB3Sd",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/前端/TypeScript/Webpack 配置 TypeScript.md",
+        "title": "Webpack 配置 TypeScript",
+        "prevFolderName": "/前端/TypeScript",
+        "directorys": [
+          {
+            "text": "loader 编译",
+            "level": 2,
+            "id": "loader-编译",
+            "childrens": [
+              {
+                "text": "使用 awesome-typescript-loader 编译",
+                "level": 3,
+                "id": "使用-awesome-typescript-loader-编译"
+              },
+              {
+                "text": "使用 @babel/preset-typescript 编译",
+                "level": 3,
+                "id": "使用-babelpreset-typescript-编译"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "wYeuai7zm4": {
+      "N8rIMO-ZPl": {
+        "id": "N8rIMO-ZPl",
+        "navsId": "wYeuai7zm4",
+        "path": "/Users/junjie/其他/未命名文件夹/marked/md/打包构建/Webpack 配置过程中可能出现的问题.md",
+        "title": "Webpack 配置过程中可能出现的问题",
+        "prevFolderName": "/打包构建",
+        "directorys": [
+          {
+            "text": "环境变量",
+            "level": 3,
+            "id": "环境变量"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,100 @@
+<h1 id="typescript-语法应用">TypeScript 语法应用</h1>
+<h2 id="概述">概述</h2>
+<p>本文仅简单记录一下语法，及使用过程的一些经验之谈。如对 <code>TypeScript</code> 基础语法不太了解，可直接阅读<a href="https://www.tslang.cn/docs/handbook/basic-types.html" target="_blank">中文文档</a></p>
+<h2 id="类型声明">类型声明</h2>
+<p>使用冒号声明</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">let</span> isDone: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-keyword">let</span> count: <span class="hljs-built_in">number</span> = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">let</span> name: <span class="hljs-built_in">string</span> = <span class="hljs-string">''</span>;
+<span class="hljs-comment">// 数组</span>
+<span class="hljs-keyword">const</span> list: <span class="hljs-built_in">number</span>[] = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+<span class="hljs-keyword">const</span> list2: <span class="hljs-built_in">Array</span>[<span class="hljs-built_in">number</span>] = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+<span class="hljs-keyword">const</span> list3: [<span class="hljs-built_in">string</span>, <span class="hljs-built_in">number</span>] = [<span class="hljs-string">'hello'</span>, <span class="hljs-number">10</span>]
+<span class="hljs-keyword">const</span> list4: <span class="hljs-built_in">any</span>[] = [<span class="hljs-number">1</span>, <span class="hljs-string">'hello'</span>, {a: <span class="hljs-string">'b'</span>}, [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]]
+<span class="hljs-comment">// 枚举</span>
+<span class="hljs-keyword">enum</span> ISex {
+  man = <span class="hljs-number">1</span>,
+  woman = <span class="hljs-number">0</span>
+}
+<span class="hljs-keyword">const</span> man: <span class="hljs-built_in">number</span> = ISex.man <span class="hljs-comment">// 输出 1</span>
+<span class="hljs-keyword">const</span> man2: <span class="hljs-built_in">string</span> = ISex[<span class="hljs-number">1</span>] <span class="hljs-comment">// 输出 'man'</span>
+<span class="hljs-comment">// 对象</span>
+<span class="hljs-keyword">const</span> student: {} = <span class="hljs-built_in">Object</span>.create(<span class="hljs-literal">null</span>); <span class="hljs-comment">// 可以赋任意对象，只能调用 `Object` 原型链上的方法，***而不能调用赋值的属性或方法***。</span>
+<span class="hljs-keyword">const</span> student2: <span class="hljs-built_in">Object</span> = <span class="hljs-built_in">Object</span>.create(<span class="hljs-literal">null</span>); <span class="hljs-comment">// 可以赋任意对象，只能调用 `Object` 原型链上的方法，***而不能调用赋值的属性或方法***。</span>
+<span class="hljs-keyword">interface</span> IStudent {
+  name: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// 必需存在的属性</span>
+  readonly sex: <span class="hljs-built_in">number</span>: <span class="hljs-comment">// 只读</span>
+  address?: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// 可选存在的属性</span>
+  readonly [propName: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">any</span>; <span class="hljs-comment">// 索引签名-表示一个或多个任意以字符串为属性名的属性</span>
+}
+
+<span class="hljs-keyword">const</span> student3: IStudent = {
+  name: <span class="hljs-string">'张三'</span>, <span class="hljs-comment">// 必须有 name 属性</span>
+  sex: ISex.man,
+  country: <span class="hljs-string">'中国'</span>
+}
+<span class="hljs-comment">// 函数</span>
+<span class="hljs-keyword">interface</span> IGoToSchool {
+  (student: IStudent, isRaining: <span class="hljs-built_in">boolean</span>): <span class="hljs-built_in">boolean</span>;
+}
+<span class="hljs-keyword">const</span> goToSchool: IGoToSchool = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">student, isRaining</span>) </span>{
+  <span class="hljs-keyword">if</span> (isRaining) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${student.name}</span> go to school`</span>}
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}
+<span class="hljs-keyword">const</span> goToSchool2 = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">student: IStudent, isRaining: <span class="hljs-built_in">boolean</span></span>): <span class="hljs-title">boolean</span> </span>{
+  <span class="hljs-keyword">if</span> (isRaining) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${student.name}</span> go to school`</span>}
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}
+<span class="hljs-comment">// 其他</span>
+<span class="hljs-keyword">let</span> a: <span class="hljs-built_in">any</span> = {};
+<span class="hljs-keyword">let</span> u: <span class="hljs-literal">undefined</span> = <span class="hljs-literal">undefined</span>;
+<span class="hljs-keyword">let</span> n: <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">let</span> unusable: <span class="hljs-built_in">void</span> = <span class="hljs-literal">undefined</span>;
+<span class="hljs-comment">// 返回never的函数必须存在无法达到的终点</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">error</span>(<span class="hljs-params">message: <span class="hljs-built_in">string</span></span>): <span class="hljs-title">never</span> </span>{
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(message);
+}</code></pre>
+<h2 id="数组">数组</h2>
+<h3 id="只读数组">只读数组</h3>
+<pre><code class="language-TypeScript"><span class="hljs-attr">let a:</span> <span class="hljs-string">number[]</span> <span class="hljs-string">=</span> <span class="hljs-string">[1,</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-number">4</span><span class="hljs-string">];</span>
+<span class="hljs-attr">let ro:</span> <span class="hljs-string">ReadonlyArray&lt;number&gt;</span> <span class="hljs-string">=</span> <span class="hljs-string">a;</span>
+<span class="hljs-string">a.push(5)</span> <span class="hljs-string">//</span> <span class="hljs-string">正常工作</span>
+<span class="hljs-string">ro.push(6)</span> <span class="hljs-string">//</span> <span class="hljs-attr">Error:</span> <span class="hljs-string">类型“readonly</span> <span class="hljs-string">number[]”上不存在属性“push”</span>
+<span class="hljs-string">console.log(ro)</span> <span class="hljs-string">//</span> <span class="hljs-string">[1,</span> <span class="hljs-number">2</span><span class="hljs-string">,</span> <span class="hljs-number">3</span><span class="hljs-string">,</span> <span class="hljs-number">4</span><span class="hljs-string">,</span> <span class="hljs-number">5</span><span class="hljs-string">]</span></code></pre>
+<h2 id="对象">对象</h2>
+<h3 id="索引签名">索引签名</h3>
+<p><code>interface</code> 中未定义的类型，不能被赋值给变量。但是有的情况，可能不清楚属性名。可以使用 索引签名来处理</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">interface</span> IStudent {
+  name: <span class="hljs-built_in">string</span>;
+  country?: <span class="hljs-built_in">string</span>;
+  [propName: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">any</span>;
+}
+
+<span class="hljs-keyword">const</span> student: IStudent = {
+  name: <span class="hljs-string">'刘星'</span>,
+  country: <span class="hljs-string">'中国'</span>,
+  sister: <span class="hljs-string">'夏雪'</span>, <span class="hljs-comment">// 如未定义 [propName: string] ，则会报错</span>
+  brother: <span class="hljs-string">'夏雨'</span>
+}</code></pre>
+<h3 id="会被绕开的对象赋值">会被绕开的对象赋值</h3>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">interface</span> <span class="hljs-title">IStudent</span> {
+  name: <span class="hljs-keyword">string</span>;
+  country?: <span class="hljs-keyword">string</span>;
+}
+
+<span class="hljs-keyword">const</span> studentTest = {
+  name: <span class="hljs-string">'刘星'</span>,
+  country: <span class="hljs-string">'中国'</span>,
+  sister: <span class="hljs-string">'夏雪'</span>,
+  brother: <span class="hljs-string">'夏雨'</span>
+}
+
+<span class="hljs-keyword">const</span> student: IStudent = studentTest <span class="hljs-comment">// 虽然不满足 IStudent，但是因为 studentTest 没有类型检查，所以不会报错</span></code></pre>
+<h2 id="类型断言">类型断言</h2>
+<p>类型断言，适用于已经确定是某种类型，不再需要特殊的数据检查和解构。有两种方式</p>
+<pre><code class="language-TypeScript"><span class="hljs-keyword">let</span> someValue: <span class="hljs-built_in">any</span> = <span class="hljs-string">"this is a string"</span>;
+
+<span class="hljs-keyword">let</span> strLength: <span class="hljs-built_in">number</span> = (&lt;<span class="hljs-built_in">string</span>&gt;someValue).length; <span class="hljs-comment">// 尖括号语法（不适用于 JSX）</span>
+<span class="hljs-keyword">let</span> strLength: <span class="hljs-built_in">number</span> = (someValue <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>).length; <span class="hljs-comment">// as 语法</span></code></pre>
