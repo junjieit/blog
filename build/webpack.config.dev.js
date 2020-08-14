@@ -23,9 +23,11 @@ module.exports = merge(base, {
       }
     ]
   },
+  optimization: {
+    moduleIds: 'named'
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html'
     }),
