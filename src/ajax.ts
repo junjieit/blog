@@ -40,22 +40,22 @@ export function postData(url:string, data:any) {
  * @url {string} 要提交的地址
  * @data {object} 要提交的数据
  */
-// export function submitData(url:string, data:any) {
-//     return new Promise((resolve) => {
-//       let formData = new URLSearchParams()
-//       for (const key in data) {
-//         formData.append(key, data[key])
-//       }
-//       getFetch(url, {
-//         body: formData,
-//         headers: {
-//             'content-type': 'application/x-www-form-urlencoded',
-//         },
-//       }).then(result => {
-//         resolve(result)
-//       })
-//     });
-// }
+export function submitData(url:string, data:any) {
+    return new Promise((resolve) => {
+      let formData = new URLSearchParams()
+      Object.keys(data).forEach(key => {
+        formData.append(key, data[key])
+      })
+      getFetch(url, {
+        body: formData,
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+        },
+      }).then(result => {
+        resolve(result)
+      })
+    });
+}
 
 export function getData(url:string, data?:any) {
   return new Promise((resolve) => {

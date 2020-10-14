@@ -22,7 +22,16 @@ export const GlobalStyle = createGlobalStyle`
   body{background:#fff;}
   a,a:hover{color:#333;}
 
-  *{line-height: 1;}
+  *{
+    line-height: 1;
+    &::-webkit-scrollbar-thumb {
+      background-color: #ddd;
+    }
+    &::-webkit-scrollbar {
+      height: 10px;
+      width: 6px;
+    }
+  }
   body {
     background-color: #eee;
     font-size: 14px;
@@ -31,6 +40,27 @@ export const GlobalStyle = createGlobalStyle`
     &:focus{
       outline: 1px solid rgb(26,188,156);
     }
+  }
+
+  input {
+    padding: 0 10px;
+    height: 32px;
+    line-height: 1;
+    border: 1px solid #dcdfe6;
+    background-color: #fff;
+  }
+
+  button {
+    padding: 0 5px;
+    min-width: 60px;
+    height: 32px;
+    text-align: center;
+    border: 1px solid #dcdfe6;
+    background-color: #fff;
+  }
+
+  input + button {
+    margin-left: 8px;
   }
 `
 

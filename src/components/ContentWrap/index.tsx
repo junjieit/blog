@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import styled from 'styled-components'
 import { screenFitMedia } from '../../util/screen'
 import Skeleton from '../Skeleton'
@@ -264,12 +264,12 @@ interface IContentWrapProps extends React.HTMLAttributes<HTMLDivElement> {
   loading?: boolean;
 }
 
-const ContentWrap = ({ loading, children, ...attrProps }:IContentWrapProps) => {
+const ContentWrap = ({ loading, children, ...attrProps }:IContentWrapProps, ref:React.Ref<HTMLDivElement>) => {
   return loading ? <Skeleton /> : (
-    <ContentWrapDiv { ...attrProps }>
+    <ContentWrapDiv ref={ref} { ...attrProps }>
       { children }
     </ContentWrapDiv>
   )
 }
 
-export default ContentWrap
+export default forwardRef(ContentWrap)

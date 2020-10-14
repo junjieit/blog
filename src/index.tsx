@@ -12,6 +12,7 @@ if (isPro() && 'serviceWorker' in navigator) {
     })
   })
 }
+console.log(React)
 
 ReactDOM.render(
   <Router>

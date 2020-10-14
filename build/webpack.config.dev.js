@@ -13,6 +13,13 @@ module.exports = merge(base, {
     hot: true,
     contentBase: path.resolve(__dirname, '../', 'public'),
     historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:3000',
+        ws: true,
+        changeOrigin: true,
+      },
+    }
   },
   module: {
     rules: [
