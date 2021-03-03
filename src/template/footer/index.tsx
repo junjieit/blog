@@ -31,7 +31,7 @@ const EmailWrap = styled.p`
 const Footer = () => {
   return (
     <MainWrap>
-      ©2020 
+      ©2021 
       {/* <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo">
         <img src={ghsImg} />
       </a> */}
